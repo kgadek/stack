@@ -7,10 +7,10 @@ and use the provided template to include all necessary details.
 
 The more detailed your report, the faster it can be resolved and will ensure it
 is resolved in the right way. Once your bug has been resolved, the responsible
-will tag the issue as _Needs confirmation_ and assign the issue back to you.
-Once you have tested and confirmed that the issue is resolved, close the issue.
-If you are not a member of the project, you will be asked for confirmation and
-we will close it.
+person will tag the issue as _Needs confirmation_ and assign the issue back to
+you. Once you have tested and confirmed that the issue is resolved, close the 
+issue. If you are not a member of the project, you will be asked for
+confirmation and we will close it.
 
 
 ## Documentation
@@ -44,9 +44,9 @@ discuss the change before plowing into writing code.
 
 If you'd like to help out but aren't sure what to work on, look for issues with
 the
-[awaiting pr](https://github.com/commercialhaskell/stack/issues?q=is%3Aopen+is%3Aissue+label%3A%22awaiting+pr%22)
+[awaiting pull request](https://github.com/commercialhaskell/stack/issues?q=is%3Aopen+is%3Aissue+label%3A%22awaiting+pull+request%22)
 label. Issues that are suitable for newcomers to the codebase have the
-[newcomer](https://github.com/commercialhaskell/stack/issues?q=is%3Aopen+is%3Aissue+label%3A%22awaiting+pr%22+label%3Anewcomer)
+[newcomer friendly](https://github.com/commercialhaskell/stack/issues?q=is%3Aopen+is%3Aissue+label%3A%22awaiting+pull+request%22+label%3a%22newcomer+friendly%22)
 label. Best to post a comment to the issue before you start work, in case anyone
 has already started.
 
@@ -64,8 +64,8 @@ quality tool.
 Note that stack contributors need not dogmatically follow the suggested hints
 but are encouraged to debate their usefulness. If you find a hint is not useful
 and detracts from readability, consider marking it in the [configuration
-file](https://github.com/commercialhaskell/stack/blob/master/HLint.hs) to
-be ignored. Please refer to the [HLint manual](https://github.com/ndmitchell/hlint#ignoring-hints)
+file](https://github.com/commercialhaskell/stack/blob/master/.hlint.yaml) to
+be ignored. Please refer to the [HLint manual](https://github.com/ndmitchell/hlint#readme)
 for configuration syntax.
 
 Quoting [@mgsloan](https://github.com/commercialhaskell/stack/pulls?utf8=%E2%9C%93&q=is%3Apr%20author%3Amgsloan):
@@ -85,8 +85,7 @@ stack install hlint
 Once installed, you can check your changes with:
 
 ```
-hlint src/ test/ --cpp-simple --hint=HLint.hs
+hlint src/ test/ --cpp-simple
 ```
 
-Where `--cpp-simple` strips `#` lines and `--hint` explicitly specifies the
-configuration file.
+Where `--cpp-simple` strips `#` lines.

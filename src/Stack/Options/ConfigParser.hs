@@ -1,8 +1,7 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 module Stack.Options.ConfigParser where
 
 import           Data.Char
-import           Data.Either.Combinators
-import           Data.Monoid.Extra
 import qualified Data.Map as Map
 import qualified Data.Set                          as Set
 import           Options.Applicative
@@ -15,6 +14,7 @@ import           Stack.Options.GhcBuildParser
 import           Stack.Options.GhcVariantParser
 import           Stack.Options.NixParser
 import           Stack.Options.Utils
+import           Stack.Prelude
 import           Stack.Types.Config
 import qualified System.FilePath as FilePath
 
@@ -22,8 +22,8 @@ import qualified System.FilePath as FilePath
 configOptsParser :: FilePath -> GlobalOptsContext -> Parser ConfigMonoid
 configOptsParser currentDir hide0 =
     (\stackRoot workDir buildOpts dockerOpts nixOpts systemGHC installGHC arch ghcVariant ghcBuild jobs includes libs
-    _progDummyPath progAlexPath progArPath progC2hsPath progCpphsPath progGccPath progGhcPath progGhcPkgPath progGhcjsPath progGhcjsPkgPath progGreencardPath progHaddockPath progHappyPath progHaskellSuitePath progHaskellSuitePkgPath progHmakePath progHpcPath progHsc2hsPath progHscolourPath progLdPath progPkgConfigPath progStripPath progTarPath
-    _progDummyOptions progAlexOptions progArOptions progC2hsOptions progCpphsOptions progGccOptions progGhcOptions progGhcPkgOptions progGhcjsOptions progGhcjsPkgOptions progGreencardOptions progHaddockOptions progHappyOptions progHaskellSuiteOptions progHaskellSuitePkgOptions progHmakeOptions progHpcOptions progHsc2hsOptions progHscolourOptions progLdOptions progPkgConfigOptions progStripOptions progTarOptions
+    _progDummyPath progAlexPath progArPath progC2hsPath progCpphsPath progGccPath progGhcPath progGhcPkgPath progGhcjsPath progGhcjsPkgPath progGreencardPath progHaddockPath progHappyPath progHaskellSuitePath progHaskellSuitePkgPath progHmakePath progHpackPath progHpcPath progHsc2hsPath progHscolourPath progLdPath progPkgConfigPath progStripPath progTarPath
+    _progDummyOptions progAlexOptions progArOptions progC2hsOptions progCpphsOptions progGccOptions progGhcOptions progGhcPkgOptions progGhcjsOptions progGhcjsPkgOptions progGreencardOptions progHaddockOptions progHappyOptions progHaskellSuiteOptions progHaskellSuitePkgOptions progHmakeOptions progHpackOptions progHpcOptions progHsc2hsOptions progHscolourOptions progLdOptions progPkgConfigOptions progStripOptions progTarOptions
     skipGHCCheck skipMsys localBin modifyCodePage allowDifferentUser dumpLogs -> mempty
         { configMonoidStackRoot = stackRoot
         , configMonoidWorkDir = workDir
@@ -55,6 +55,7 @@ configOptsParser currentDir hide0 =
             , (ProgHaskellSuite,    progHaskellSuitePath)
             , (ProgHaskellSuitePkg, progHaskellSuitePkgPath)
             , (ProgHmake,           progHmakePath)
+            , (ProgHpack,           progHpackPath)
             , (ProgHpc,             progHpcPath)
             , (ProgHsc2hs,          progHsc2hsPath)
             , (ProgHscolour,        progHscolourPath)
@@ -79,6 +80,7 @@ configOptsParser currentDir hide0 =
             , (ProgHaskellSuite,    progHaskellSuiteOptions)
             , (ProgHaskellSuitePkg, progHaskellSuitePkgOptions)
             , (ProgHmake,           progHmakeOptions)
+            , (ProgHpack,           progHpackOptions)
             , (ProgHpc,             progHpcOptions)
             , (ProgHsc2hs,          progHsc2hsOptions)
             , (ProgHscolour,        progHscolourOptions)
@@ -245,6 +247,12 @@ configOptsParser currentDir hide0 =
                <> internal
                 ))
     <*> optionalFirst (absFileOption
+                ( long "with-hpack"
+               <> metavar "PATH-TO-HPACK"
+               <> help "Use hpack found at PATH-TO-HPC"
+               <> internal
+                ))
+    <*> optionalFirst (absFileOption
                 ( long "with-hpc"
                <> metavar "PATH-TO-HPC"
                <> help "Use hpc found at PATH-TO-HPC"
@@ -380,6 +388,12 @@ configOptsParser currentDir hide0 =
                 ( long "hmake-option"
                <> metavar "HMAKE-OPTIONS"
                <> help "Pass HMAKE-OPTIONS to the hmake"
+               <> internal
+                ))
+    <*> many (textOption
+                ( long "hpack-option"
+               <> metavar "HPACK-OPTIONS"
+               <> help "Pass HPACK-OPTIONS to the hpack"
                <> internal
                 ))
     <*> many (textOption
